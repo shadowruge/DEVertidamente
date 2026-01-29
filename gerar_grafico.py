@@ -23,22 +23,26 @@ def carregar_dados():
     
     return sentimentos, registro
 
-def gerar_grafico_svg(registro, sentimentos, num_semanas=52):
+def gerar_grafico_svg(registro, sentimentos):
     """Gera um SVG com o gráfico de sentimentos estilo GitHub"""
-    
+
     # Configurações
     tamanho_celula = 12
     espacamento = 2
     margem_esquerda = 40
     margem_topo = 20
-    
+
+    # Ano atual completo: 1º de janeiro a 31 de dezembro
+    ano_atual = datetime.now().year
+    data_inicial = datetime(ano_atual, 1, 1)
+    data_final = datetime(ano_atual, 12, 31)
+
+    # Calcular número de semanas do ano (sempre 53 para cobrir o ano todo)
+    num_semanas = 53
+
     # Calcular dimensões
     largura = margem_esquerda + (num_semanas * (tamanho_celula + espacamento))
     altura = margem_topo + (7 * (tamanho_celula + espacamento)) + 30
-    
-    # Data final (hoje) e inicial
-    data_final = datetime.now()
-    data_inicial = data_final - timedelta(weeks=num_semanas)
     
     # Começar SVG
     svg = [f'<svg width="{largura}" height="{altura}" xmlns="http://www.w3.org/2000/svg">']
