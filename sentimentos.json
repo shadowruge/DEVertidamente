@@ -1,0 +1,42 @@
+{
+  "alegria": {
+    "cor": "#F7D917",
+    "emoji": "😊"
+  },
+  "tristeza": {
+    "cor": "#5B9BD5",
+    "emoji": "😢"
+  },
+  "raiva": {
+    "cor": "#C00000",
+    "emoji": "😠"
+  },
+  "nojo": {
+    "cor": "#70AD47",
+    "emoji": "🤢"
+  },
+  "medo": {
+    "cor": "#7030A0",
+    "emoji": "😨"
+  },
+  "ansiedade": {
+    "cor": "#FFA500",
+    "emoji": "😰"
+  },
+  "vergonha": {
+    "cor": "#FF69B4",
+    "emoji": "😳"
+  },
+  "tedio": {
+    "cor": "#808080",
+    "emoji": "😑"
+  },
+  "nostalgia": {
+    "cor": "#D2691E",
+    "emoji": "🥺"
+  },
+  "inveja": {
+    "cor": "#00CED1",
+    "emoji": "😒"
+  }
+}
