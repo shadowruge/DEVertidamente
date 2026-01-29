@@ -10,7 +10,10 @@
 ## 🎨 Legenda de Sentimentos
 - 😊 **Alegria** `#F7D917`- 😢 **Tristeza** `#5B9BD5`- 😠 **Raiva** `#C00000`- 🤢 **Nojo** `#70AD47`- 😨 **Medo** `#7030A0`- 😰 **Ansiedade** `#FFA500`- 😳 **Vergonha** `#FF69B4`- 😑 **Tedio** `#808080`- 🥺 **Nostalgia** `#D2691E`- 😒 **Inveja** `#00CED1`
 
-Nenhum registro ainda.
+
+📊 **Estatísticas** (1 dias registrados)
+
+- 😊 **Alegria**: 1 dias (100.0%) ████████████████████
 
 ---
 
