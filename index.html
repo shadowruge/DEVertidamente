@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎭 DEVertidamente - Mapa de Sentimentos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --alegria: #FFD700;
+            --tristeza: #4A90E2;
+            --raiva: #E74C3C;
+            --nojinho: #2ECC71;
+            --medo: #9B59B6;
+            --ansiedade: #FF6B6B;
+            --tedio: #95A5A6;
+            --vergonha: #FF69B4;
+            --inveja: #00CED1;
+            --nostalgia: #DEB887;
+            
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --text-primary: #2C3E50;
+            --text-light: #7F8C8D;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 15px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            padding: 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        @media (min-width: 768px) {
+            body {
+                padding: 2rem;
+            }
+        }
+        
+        /* Animated background orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.25;
+            animation: float 20s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @media (min-width: 768px) {
+            .orb {
+                filter: blur(80px);
+                opacity: 0.3;
+            }
+        }
+        
+        .orb-1 {
+            width: 250px;
+            height: 250px;
+            background: var(--alegria);
+            top: -80px;
+            left: -80px;
+            animation-delay: 0s;
+        }
+        
+        @media (min-width: 768px) {
+            .orb-1 {
+                width: 400px;
+                height: 400px;
+                top: -100px;
+                left: -100px;
+            }
+        }
+        
+        .orb-2 {
+            width: 220px;
+            height: 220px;
+            background: var(--tristeza);
+            bottom: -70px;
+            right: -70px;
+            animation-delay: 5s;
+        }
+        
+        @media (min-width: 768px) {
+            .orb-2 {
+                width: 350px;
+                height: 350px;
+                bottom: -100px;
+                right: -100px;
+            }
+        }
+        
+        .orb-3 {
+            width: 200px;
+            height: 200px;
+            background: var(--raiva);
+            top: 50%;
+            right: 10%;
+            animation-delay: 10s;
+        }
+        
+        @media (min-width: 768px) {
+            .orb-3 {
+                width: 300px;
+                height: 300px;
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: slideDown 0.8s ease-out;
+        }
+        
+        @media (min-width: 768px) {
+            header {
+                margin-bottom: 3rem;
+            }
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            animation: bounce 2s infinite;
+        }
+        
+        @media (min-width: 768px) {
+            .logo {
+                font-size: 4rem;
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+        
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+        }
+        
+        @media (min-width: 768px) {
+            .subtitle {
+                font-size: 1.2rem;
+            }
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (min-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1.5fr 1fr;
+                gap: 2rem;
+            }
+        }
+        
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.25rem;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+        
+        @media (min-width: 768px) {
+            .card {
+                border-radius: 24px;
+                padding: 2rem;
+            }
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-5px);
+        }
+        
+        @media (max-width: 767px) {
+            .card:hover {
+                transform: translateY(-2px);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+        
+        .card h2 {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .card h2 {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        .card h2 .icon {
+            font-size: 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .card h2 .icon {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Register Form */
+        .register-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .register-form {
+                gap: 1.5rem;
+            }
+        }
+        
+        .mood-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+        }
+        
+        @media (min-width: 480px) {
+            .mood-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+        }
+        
+        .mood-option {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .mood-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .mood-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 12px;
+            background: #f8f9fa;
+            border: 3px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        
+        @media (min-width: 768px) {
+            .mood-label {
+                padding: 1rem;
+                border-radius: 16px;
+                font-size: 0.95rem;
+                gap: 0.75rem;
+            }
+        }
+        
+        .mood-option:hover .mood-label {
+            transform: scale(1.05);
+            background: white;
+        }
+        
+        .mood-option input[type="radio"]:checked + .mood-label {
+            border-color: currentColor;
+            background: white;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .mood-emoji {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        
+        @media (min-width: 768px) {
+            .mood-emoji {
+                font-size: 2rem;
+            }
+        }
+        
+        .mood-name {
+            flex: 1;
+        }
+        
+        /* Color coding for moods */
+        .mood-alegria { color: var(--alegria); }
+        .mood-tristeza { color: var(--tristeza); }
+        .mood-raiva { color: var(--raiva); }
+        .mood-nojinho { color: var(--nojinho); }
+        .mood-medo { color: var(--medo); }
+        .mood-ansiedade { color: var(--ansiedade); }
+        .mood-tedio { color: var(--tedio); }
+        .mood-vergonha { color: var(--vergonha); }
+        .mood-inveja { color: var(--inveja); }
+        .mood-nostalgia { color: var(--nostalgia); }
+        
+        textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 0.875rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.9rem;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+        
+        @media (min-width: 768px) {
+            textarea {
+                min-height: 100px;
+                padding: 1rem;
+                font-size: 0.95rem;
+            }
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+        
+        .time-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .time-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .time-input {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        @media (min-width: 768px) {
+            .time-input {
+                padding: 1rem;
+                font-size: 0.95rem;
+            }
+        }
+        
+        .time-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+        
+        @media (min-width: 768px) {
+            .btn {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+                width: auto;
+            }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        /* Calendar Grid */
+        .calendar-container {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.25rem 0;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0,0,0,0.2) transparent;
+        }
+        
+        .calendar-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .calendar-container::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 4px;
+        }
+        
+        .calendar-container::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+        
+        .calendar-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.3);
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: 30px repeat(53, 9px);
+            gap: 1.5px;
+            min-width: 550px;
+        }
+        
+        @media (min-width: 768px) {
+            .calendar-container {
+                padding: 1rem 0;
+            }
+            
+            .calendar-grid {
+                grid-template-columns: 40px repeat(53, 11px);
+                gap: 2px;
+                min-width: 650px;
+            }
+        }
+        
+        .day-label {
+            font-size: 0.55rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 4px;
+        }
+        
+        @media (min-width: 768px) {
+            .day-label {
+                font-size: 0.65rem;
+                padding-right: 6px;
+            }
+        }
+        
+        .calendar-cell {
+            width: 9px;
+            height: 9px;
+            border-radius: 2px;
+            background: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .calendar-cell.has-data {
+            cursor: pointer;
+            animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        @media (min-width: 768px) {
+            .calendar-cell {
+                width: 11px;
+                height: 11px;
+                border-radius: 2px;
+            }
+        }
+        
+        .calendar-cell:hover {
+            transform: scale(2.5);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        
+        @media (min-width: 768px) {
+            .calendar-cell:hover {
+                transform: scale(2);
+            }
+        }
+        
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        /* Stats */
+        .stats-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            background: white;
+            transform: translateX(5px);
+        }
+        
+        .stat-emoji {
+            font-size: 2rem;
+        }
+        
+        .stat-content {
+            flex: 1;
+        }
+        
+        .stat-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stat-count {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+        
+        .empty-state .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            background: white;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transform: translateY(150%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+        }
+        
+        @media (min-width: 768px) {
+            .toast {
+                bottom: 2rem;
+                left: auto;
+                right: 2rem;
+                max-width: 400px;
+                padding: 1.5rem 2rem;
+                border-radius: 16px;
+                gap: 1rem;
+            }
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+        }
+        
+        .toast-icon {
+            font-size: 2rem;
+        }
+        
+        .toast-message {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+        }
+        
+        .tooltip.show {
+            opacity: 1;
+        }
+        
+        /* Month labels */
+        .month-labels {
+            display: grid;
+            grid-template-columns: 30px repeat(53, 9px);
+            gap: 1.5px;
+            margin-bottom: 0.25rem;
+            font-size: 0.6rem;
+            color: var(--text-light);
+        }
+        
+        @media (min-width: 768px) {
+            .month-labels {
+                grid-template-columns: 40px repeat(53, 11px);
+                gap: 2px;
+                margin-bottom: 0.5rem;
+                font-size: 0.7rem;
+            }
+        }
+        
+        .month-label {
+            grid-column: span 4;
+            text-align: left;
+        }
+        
+        .scroll-hint {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+        
+        @media (min-width: 768px) {
+            .scroll-hint {
+                display: none;
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+        }
+        
+        @media (min-width: 768px) {
+            footer {
+                margin-top: 3rem;
+                padding: 2rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Day Details Modal */
+        .day-details-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 1rem;
+            animation: fadeIn 0.2s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .day-details-modal {
+            background: white;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow: hidden;
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .day-details-header {
+            padding: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .day-details-header h3 {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin: 0;
+            text-transform: capitalize;
+        }
+        
+        .close-btn {
+            background: #f0f0f0;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .close-btn:hover {
+            background: #e0e0e0;
+            transform: rotate(90deg);
+        }
+        
+        .day-details-content {
+            padding: 1.5rem;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .detail-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            padding-left: 1.25rem;
+        }
+        
+        .detail-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .detail-time {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+        
+        .detail-mood {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-note {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            font-style: italic;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">🎭</div>
+            <h1>DEVertidamente</h1>
+            <p class="subtitle">Mapeie seus sentimentos, entenda suas emoções</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="card">
+                <h2><span class="icon">📅</span> Mapa Anual de Sentimentos</h2>
+                <div class="scroll-hint">👈 Deslize para ver o ano completo 👉</div>
+                <div class="calendar-container">
+                    <div class="month-labels" id="monthLabels"></div>
+                    <div class="calendar-grid" id="calendar"></div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><span class="icon">✨</span> Como você se sente hoje?</h2>
+                <form class="register-form" id="moodForm">
+                    <div class="mood-grid" id="moodOptions"></div>
+                    
+                    <div class="time-selector">
+                        <label for="timeInput" class="time-label">⏰ Horário</label>
+                        <input 
+                            type="time" 
+                            id="timeInput" 
+                            class="time-input"
+                        />
+                    </div>
+                    
+                    <textarea 
+                        id="noteInput" 
+                        placeholder="Quer adicionar uma nota sobre como está se sentindo? (opcional)"
+                    ></textarea>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        💾 Registrar Sentimento
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2><span class="icon">📊</span> Estatísticas</h2>
+            <div id="stats" class="stats-grid">
+                <div class="empty-state">
+                    <div class="icon">📈</div>
+                    <p>Registre seu primeiro sentimento para ver as estatísticas</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>💡 Inspirado no filme <strong>Divertidamente (Inside Out)</strong></p>
+            <p>Acompanhe sua saúde emocional ao longo do tempo</p>
+        </footer>
+    </div>
+    
+    <div class="toast" id="toast">
+        <span class="toast-icon" id="toastIcon"></span>
+        <span class="toast-message" id="toastMessage"></span>
+    </div>
+    
+    <div class="tooltip" id="tooltip"></div>
+    
+    <script>
+        // Configuração da API
+        const API_URL = window.location.origin;
+        const USE_API = true; // Mude para false para usar localStorage
+        
+        const MOODS = {
+            alegria: { emoji: '😊', cor: '#FFD700', name: 'Alegria' },
+            tristeza: { emoji: '😢', cor: '#4A90E2', name: 'Tristeza' },
+            raiva: { emoji: '😠', cor: '#E74C3C', name: 'Raiva' },
+            nojinho: { emoji: '🤢', cor: '#2ECC71', name: 'Nojinho' },
+            medo: { emoji: '😨', cor: '#9B59B6', name: 'Medo' },
+            ansiedade: { emoji: '😰', cor: '#FF6B6B', name: 'Ansiedade' },
+            tedio: { emoji: '😑', cor: '#95A5A6', name: 'Tédio' },
+            vergonha: { emoji: '😳', cor: '#FF69B4', name: 'Vergonha' },
+            inveja: { emoji: '😒', cor: '#00CED1', name: 'Inveja' },
+            nostalgia: { emoji: '🥺', cor: '#DEB887', name: 'Nostalgia' }
+        };
+        
+        let registro = {};
+        
+        // Funções de API
+        async function loadRegistro() {
+            if (!USE_API) {
+                registro = JSON.parse(localStorage.getItem('devertidamente_registro') || '{}');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/api/registro`);
+                const data = await response.json();
+                registro = data.registro || {};
+            } catch (error) {
+                console.error('Erro ao carregar registros:', error);
+                // Fallback para localStorage
+                registro = JSON.parse(localStorage.getItem('devertidamente_registro') || '{}');
+            }
+        }
+        
+        async function saveRegistro(date, mood, note, time) {
+            if (!USE_API) {
+                if (!registro[date]) {
+                    registro[date] = { registros: [] };
+                }
+                registro[date].registros.push({
+                    horario: time,
+                    sentimento: mood,
+                    nota: note || null
+                });
+                registro[date].registros.sort((a, b) => a.horario.localeCompare(b.horario));
+                localStorage.setItem('devertidamente_registro', JSON.stringify(registro));
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/api/registro`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sentimento: mood,
+                        nota: note || null,
+                        data: date,
+                        horario: time
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Erro ao salvar registro');
+                }
+                
+                // Recarregar dados
+                await loadRegistro();
+            } catch (error) {
+                console.error('Erro ao salvar:', error);
+                // Fallback para localStorage
+                if (!registro[date]) {
+                    registro[date] = { registros: [] };
+                }
+                registro[date].registros.push({
+                    horario: time,
+                    sentimento: mood,
+                    nota: note || null
+                });
+                localStorage.setItem('devertidamente_registro', JSON.stringify(registro));
+            }
+        }
+        
+        // Initialize mood options
+        function initMoodOptions() {
+            const container = document.getElementById('moodOptions');
+            Object.entries(MOODS).forEach(([key, mood]) => {
+                const div = document.createElement('div');
+                div.className = 'mood-option';
+                div.innerHTML = `
+                    <input type="radio" name="mood" id="mood-${key}" value="${key}">
+                    <label for="mood-${key}" class="mood-label mood-${key}">
+                        <span class="mood-emoji">${mood.emoji}</span>
+                        <span class="mood-name">${mood.name}</span>
+                    </label>
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        // Initialize calendar
+        function initCalendar() {
+            const calendar = document.getElementById('calendar');
+            const monthLabels = document.getElementById('monthLabels');
+            const year = new Date().getFullYear();
+            const startDate = new Date(year, 0, 1);
+            const endDate = new Date(year, 11, 31);
+            
+            // Add day labels
+            const dayLabels = ['', 'Seg', '', 'Qua', '', 'Sex', ''];
+            dayLabels.forEach((label, i) => {
+                const div = document.createElement('div');
+                div.className = 'day-label';
+                div.textContent = label;
+                calendar.appendChild(div);
+            });
+            
+            // Create month labels
+            const monthDiv = document.createElement('div');
+            monthDiv.style.gridColumn = '1';
+            monthLabels.appendChild(monthDiv);
+            
+            let currentMonth = -1;
+            let weekIndex = 0;
+            
+            // Generate cells
+            for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                const dateStr = d.toISOString().split('T')[0];
+                const dayOfWeek = d.getDay(); // 0 = Sunday
+                const adjustedDay = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Convert to 0 = Monday
+                
+                // Add month label
+                if (d.getDate() <= 7 && d.getMonth() !== currentMonth) {
+                    currentMonth = d.getMonth();
+                    const monthName = d.toLocaleDateString('pt-BR', { month: 'short' });
+                    const monthLabel = document.createElement('div');
+                    monthLabel.className = 'month-label';
+                    monthLabel.textContent = monthName;
+                    monthLabel.style.gridColumn = `${weekIndex + 2}`;
+                    monthLabels.appendChild(monthLabel);
+                }
+                
+                // Add empty cells for first week alignment
+                if (d.getTime() === startDate.getTime()) {
+                    for (let i = 0; i < adjustedDay; i++) {
+                        const empty = document.createElement('div');
+                        calendar.appendChild(empty);
+                    }
+                }
+                
+                const cell = document.createElement('div');
+                cell.className = 'calendar-cell';
+                cell.dataset.date = dateStr;
+                
+                if (registro[dateStr]) {
+                    const dayData = registro[dateStr];
+                    
+                    // Suportar formato antigo e novo
+                    if (dayData.registros && dayData.registros.length > 0) {
+                        // Novo formato - múltiplos registros
+                        if (dayData.registros.length === 1) {
+                            // Um registro apenas - cor sólida
+                            const mood = dayData.registros[0].sentimento;
+                            cell.style.backgroundColor = MOODS[mood].cor;
+                        } else {
+                            // Múltiplos registros - gradiente
+                            const colors = dayData.registros.map(r => MOODS[r.sentimento].cor);
+                            const percentage = 100 / colors.length;
+                            let gradient = 'linear-gradient(135deg';
+                            colors.forEach((color, idx) => {
+                                const start = idx * percentage;
+                                const end = (idx + 1) * percentage;
+                                gradient += `, ${color} ${start}%, ${color} ${end}%`;
+                            });
+                            gradient += ')';
+                            cell.style.background = gradient;
+                        }
+                        cell.classList.add('has-data');
+                    } else if (dayData.sentimento) {
+                        // Formato antigo
+                        cell.style.backgroundColor = MOODS[dayData.sentimento].cor;
+                        cell.classList.add('has-data');
+                    }
+                }
+                
+                cell.addEventListener('mouseenter', (e) => showTooltip(e, dateStr));
+                cell.addEventListener('mouseleave', hideTooltip);
+                cell.addEventListener('click', (e) => showDayDetails(dateStr));
+                
+                calendar.appendChild(cell);
+                
+                if (adjustedDay === 6) {
+                    weekIndex++;
+                }
+            }
+        }
+        
+        // Tooltip functions
+        function showTooltip(e, dateStr) {
+            const tooltip = document.getElementById('tooltip');
+            const rect = e.target.getBoundingClientRect();
+            
+            let text = dateStr;
+            if (registro[dateStr]) {
+                const dayData = registro[dateStr];
+                
+                // Suportar formato antigo e novo
+                if (dayData.registros && dayData.registros.length > 0) {
+                    text = dayData.registros.map(r => {
+                        const mood = MOODS[r.sentimento];
+                        let line = `${r.horario} - ${mood.emoji} ${mood.name}`;
+                        if (r.nota) line += ` (${r.nota})`;
+                        return line;
+                    }).join(' | ');
+                } else if (dayData.sentimento) {
+                    // Formato antigo
+                    const mood = MOODS[dayData.sentimento];
+                    text = `${mood.emoji} ${mood.name}`;
+                    if (dayData.nota) {
+                        text += ` - ${dayData.nota}`;
+                    }
+                }
+            } else {
+                text += ' - Sem registro';
+            }
+            
+            tooltip.textContent = text;
+            tooltip.style.left = rect.left + rect.width / 2 + 'px';
+            tooltip.style.top = rect.top - 40 + 'px';
+            tooltip.style.transform = 'translateX(-50%)';
+            tooltip.classList.add('show');
+        }
+        
+        function hideTooltip() {
+            document.getElementById('tooltip').classList.remove('show');
+        }
+        
+        // Show day details
+        function showDayDetails(dateStr) {
+            const dayData = registro[dateStr];
+            if (!dayData) return;
+            
+            let registros = [];
+            if (dayData.registros) {
+                registros = dayData.registros;
+            } else if (dayData.sentimento) {
+                registros = [{
+                    horario: '12:00',
+                    sentimento: dayData.sentimento,
+                    nota: dayData.nota
+                }];
+            }
+            
+            if (registros.length === 0) return;
+            
+            const formattedDate = new Date(dateStr + 'T00:00:00').toLocaleDateString('pt-BR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            const detailsHtml = `
+                <div class="day-details-overlay" onclick="this.remove()">
+                    <div class="day-details-modal" onclick="event.stopPropagation()">
+                        <div class="day-details-header">
+                            <h3>📅 ${formattedDate}</h3>
+                            <button class="close-btn" onclick="this.closest('.day-details-overlay').remove()">✕</button>
+                        </div>
+                        <div class="day-details-content">
+                            ${registros.map(r => {
+                                const mood = MOODS[r.sentimento];
+                                return `
+                                    <div class="detail-item" style="border-left: 4px solid ${mood.cor}">
+                                        <div class="detail-time">⏰ ${r.horario}</div>
+                                        <div class="detail-mood">${mood.emoji} <strong>${mood.name}</strong></div>
+                                        ${r.nota ? `<div class="detail-note">💭 ${r.nota}</div>` : ''}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', detailsHtml);
+        }
+        
+        // Update statistics
+        function updateStats() {
+            const statsContainer = document.getElementById('stats');
+            let totalRegistros = 0;
+            
+            // Contar registros
+            Object.keys(registro).forEach(date => {
+                const dayData = registro[date];
+                if (dayData.registros) {
+                    totalRegistros += dayData.registros.length;
+                } else if (dayData.sentimento) {
+                    totalRegistros += 1;
+                }
+            });
+            
+            if (totalRegistros === 0) {
+                statsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📈</div>
+                        <p>Registre seu primeiro sentimento para ver as estatísticas</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const counts = {};
+            Object.values(registro).forEach(dayData => {
+                if (dayData.registros) {
+                    dayData.registros.forEach(r => {
+                        counts[r.sentimento] = (counts[r.sentimento] || 0) + 1;
+                    });
+                } else if (dayData.sentimento) {
+                    counts[dayData.sentimento] = (counts[dayData.sentimento] || 0) + 1;
+                }
+            });
+            
+            const sorted = Object.entries(counts)
+                .sort((a, b) => b[1] - a[1])
+                .map(([mood, count]) => ({
+                    mood,
+                    count,
+                    percentage: (count / totalRegistros * 100).toFixed(1)
+                }));
+            
+            const totalDias = Object.keys(registro).length;
+            
+            statsContainer.innerHTML = `
+                <div style="margin-bottom: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 12px;">
+                    <div style="font-size: 0.9rem; color: var(--text-light);">
+                        📅 <strong>${totalDias}</strong> dias registrados • 
+                        📝 <strong>${totalRegistros}</strong> sentimentos registrados
+                    </div>
+                </div>
+            ` + sorted.map(stat => {
+                const moodData = MOODS[stat.mood];
+                return `
+                    <div class="stat-item">
+                        <span class="stat-emoji">${moodData.emoji}</span>
+                        <div class="stat-content">
+                            <div class="stat-name">${moodData.name}</div>
+                            <div class="stat-bar">
+                                <div class="stat-fill" style="width: ${stat.percentage}%; background: ${moodData.cor};"></div>
+                            </div>
+                            <div class="stat-count">${stat.count} registros (${stat.percentage}%)</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Show toast notification
+        function showToast(emoji, message) {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastIcon.textContent = emoji;
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Handle form submission
+        document.getElementById('moodForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const selectedMood = document.querySelector('input[name="mood"]:checked');
+            if (!selectedMood) {
+                showToast('⚠️', 'Por favor, selecione um sentimento');
+                return;
+            }
+            
+            const mood = selectedMood.value;
+            const note = document.getElementById('noteInput').value.trim();
+            const timeInput = document.getElementById('timeInput');
+            const time = timeInput.value || new Date().toTimeString().slice(0, 5);
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Salvar (API ou localStorage)
+            await saveRegistro(today, mood, note, time);
+            
+            const moodData = MOODS[mood];
+            showToast(moodData.emoji, `Sentimento registrado às ${time}: ${moodData.name}`);
+            
+            // Reset form
+            selectedMood.checked = false;
+            document.getElementById('noteInput').value = '';
+            timeInput.value = '';
+            
+            // Refresh UI
+            document.getElementById('calendar').innerHTML = '';
+            document.getElementById('monthLabels').innerHTML = '';
+            initCalendar();
+            updateStats();
+        });
+        
+        // Initialize app
+        async function init() {
+            await loadRegistro();
+            initMoodOptions();
+            initCalendar();
+            updateStats();
+        }
+        
+        init();
+    </script>
+</body>
+</html>
