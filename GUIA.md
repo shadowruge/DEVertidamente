@@ -106,16 +106,7 @@ crontab -e
 # Adicionar linha (exemplo: todo dia às 20h)
 0 20 * * * cd /caminho/para/DEVertidamente && /caminho/para/DEVertidamente/commit_diario.sh
 ```
-
-### Lembrete no Windows
-
-Use o Agendador de Tarefas do Windows para executar o script diariamente.
-
 ## 🐛 Solução de Problemas
-
-### Erro: "python3 not found"
-- No Windows, tente usar `python` ao invés de `python3`
-- Certifique-se de que o Python está instalado e no PATH
 
 ### Erro: "permission denied"
 ```bash
@@ -126,7 +117,7 @@ chmod +x registrar.py gerar_grafico.py commit_diario.sh
 - Verifique se o arquivo `grafico.svg` foi commitado
 - O GitHub pode levar alguns minutos para atualizar a visualização
 
-## 📊 Estrutura do Projeto
+## 📊 Estrutura do Projeto original
 
 ```
 DEVertidamente/
